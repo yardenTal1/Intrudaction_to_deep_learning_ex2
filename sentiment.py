@@ -52,8 +52,8 @@ def get_act(net, input, name):
 def RNN(dim ,x):
 
   # Learnable weights in the cell
-  Uh = layers.Dense(dim, use_bias=False, activation='relu')
-  Wh = layers.Dense(dim, activation='relu')
+  Uh = layers.Dense(dim, use_bias=False)
+  Wh = layers.Dense(dim)
 
   # unstacking the time axis
   x = tf.unstack(x, axis=1)
@@ -65,7 +65,7 @@ def RNN(dim ,x):
   for i in range(len(x)):
     # Apply the basic step in each time step
 
-    h = Wh(x[i]) + Uh(h)
+    h = tf.keras.activations.relu(Wh(x[i]) + Uh(h))
 
     H.append(h)
 
@@ -77,14 +77,14 @@ def RNN(dim ,x):
 
 def GRU(dim ,x):
     # Learnable weights in the cell
-    Wzx = layers.Dense(dim, activation='sigmoid')
-    Wzh = layers.Dense(dim, use_bias=False, activation='sigmoid')
+    Wzx = layers.Dense(dim)
+    Wzh = layers.Dense(dim, use_bias=False)
 
-    Wrx = layers.Dense(dim, activation='sigmoid')
-    Wrh = layers.Dense(dim, use_bias=False, activation='sigmoid')
+    Wrx = layers.Dense(dim)
+    Wrh = layers.Dense(dim, use_bias=False)
 
-    Wx = layers.Dense(dim, activation='tanh')
-    Wh = layers.Dense(dim, use_bias=False, activation='tanh')
+    Wx = layers.Dense(dim)
+    Wh = layers.Dense(dim, use_bias=False)
 
     # unstacking the time axis
     x = tf.unstack(x, axis=1)
@@ -94,9 +94,9 @@ def GRU(dim ,x):
     h = tf.zeros_like(Wx(x[0]))
 
     for i in range(len(x)):
-        z = Wzx(x[i]) + Wzh(h)
-        r = Wrx(x[i]) + Wrh(h)
-        ht = Wx(x[i]) + Wh(r * h)
+        z = tf.keras.activations.sigmoid(Wzx(x[i]) + Wzh(h))
+        r = tf.keras.activations.sigmoid(Wrx(x[i]) + Wrh(h))
+        ht = tf.keras.activations.tanh(Wx(x[i]) + Wh(r * h))
         h = (1 - z) * h + z * ht
 
         H.append(h)
