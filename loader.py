@@ -120,9 +120,11 @@ def get_dataset():
     ##########################
 
     my_test_texts = []
-    # my_test_texts.append(" -- my review - fill me -- ")
-    # my_test_texts.append(" -- my review - fill me -- ")
-    # my_test_texts.append(" -- my review - fill me -- ")
+    my_test_texts.append("i really can not understand why people said this is a good movie")
+    # my_test_texts.append("not what i expected")
+    my_test_texts.append("i have seen a lot better than this movie already")
+    my_test_texts.append("not what i expected")
+
 
     ##########################
     ##########################
